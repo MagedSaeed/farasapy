@@ -1,2 +1,2 @@
 ## Resources
-https://github.com/MagedSaeed/Farasa-py.git
+https://www.hbku.edu.qa/sites/default/files/alt-farasa_python_package.pdf
