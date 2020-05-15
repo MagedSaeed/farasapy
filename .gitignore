@@ -1,0 +1,12 @@
+.vscode/
+__pycache__/
+*.py[cod]
+farasa/__pycache__/
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+.cache
+*.log
+*.pot
