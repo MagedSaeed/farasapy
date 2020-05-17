@@ -10,10 +10,10 @@ This is a Pyhton API wrapper for [farasa](http://qatsdemo.cloudapp.net/farasa/) 
  4. Part Of Speech tagging (POS tagging).
  5. Diacritization.
 
-The toolkit is built with Java and ca 
+The toolkit is built with Java. Developers can call the binaries API directly from their code. H
 
 ## Resources
 http://alt.qcri.org/farasa/
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE0NDI1OTA3NDYsMzU4NjUzMzkyXX0=
+eyJoaXN0b3J5IjpbLTE1ODI2MTE5LDM1ODY1MzM5Ml19
 -->
