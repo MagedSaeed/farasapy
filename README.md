@@ -15,10 +15,12 @@ As Pyhton is a general purpose language and so popular for many NLP tasks, an au
 
 ## Installation
 
-## How 
+## How to use
 
-## Resources
+## Want to cite?
+
+## Useful URLs
 http://alt.qcri.org/farasa/
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTgzMTI4MjA1MSwzNTg2NTMzOTJdfQ==
+eyJoaXN0b3J5IjpbLTY0OTAyMTQ1LDM1ODY1MzM5Ml19
 -->
