@@ -6,11 +6,14 @@ This is a Pyhton API wrapper for [farasa](http://qatsdemo.cloudapp.net/farasa/) 
  Farasa is  an Arabic NLP toolkit serving the following tasks:
  1. Segmentation
  2. Stemming
- 3. Named Entity Recgonition
- 4. Part Of Speech tagging()
+ 3. Named Entity Recgonition (NER).
+ 4. Part Of Speech tagging (POS tagging).
+ 5. Diacritization.
+
+The toolkit is built using Java. As python 
 
 ## Resources
 http://alt.qcri.org/farasa/
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTQzMTgyNTk2MiwzNTg2NTMzOTJdfQ==
+eyJoaXN0b3J5IjpbLTUwNjQ5MTU0OSwzNTg2NTMzOTJdfQ==
 -->
