@@ -1,0 +1,13 @@
+Metadata-Version: 1.1
+Name: farasapy
+Version: 0.0.1
+Summary: A Python Wrapper for the well Farasa toolkit
+Home-page: https://github.com/MagedSaeed/farasapy
+Author: MagedSaeed
+Author-email: mageedsaeed1@gmail.com
+License: UNKNOWN
+Description: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: GPL
+Classifier: Operating System :: cross-platform
