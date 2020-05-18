@@ -14,13 +14,14 @@ The toolkit is built with Java. Developers who want to use it can call the binar
 As Pyhton is a general purpose language and so popular for many NLP tasks, an automation to these calls to the toolkit from the code would be convenient. This is where this wrapper fits.
 
 ## Installation
-
+TBA
 ## How to use
-
+TBA
 ## Want to cite?
-
+TBA
 ## Useful URLs
 http://alt.qcri.org/farasa/
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTY0OTAyMTQ1LDM1ODY1MzM5Ml19
+eyJoaXN0b3J5IjpbNDUzMDA3MDIyLC02NDkwMjE0NSwzNTg2NT
+MzOTJdfQ==
 -->
