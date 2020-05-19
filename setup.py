@@ -27,6 +27,13 @@ setuptools.setup(
 		'Environment :: Console',
 	],
 	python_requires='>=3.6',
+	install_requires=[
+          'requests',
+		  'tqdm',
+		  'zipfile',
+		  'tempfile',
+		  'io',
+      ],
 )
 
 # scripts=['farasa/__init__.py','farasa/farasa_bin/*','farasa/farasa_bin/lib/*','farasa/tmp/*'],
