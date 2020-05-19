@@ -1,9 +1,4 @@
-
-from pathlib import Path
-from setuptools.command.install import install
 import setuptools
-import time
-import atexit
 
 
 with open("README.md", "r") as fh:
