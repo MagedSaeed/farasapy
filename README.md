@@ -1,6 +1,6 @@
 ## Disclaimer
 
-This is a Pyhton API wrapper for [farasa](http://qatsdemo.cloudapp.net/farasa/) [[http://qatsdemo.cloudapp.net/farasa/](http://qatsdemo.cloudapp.net/farasa/)] toolkit. Although this work is licsenced under MIT, the original work is strictly premitted for research purposes only. For any commercial uses, please contact the toolkit creators.
+This is a Pyhton API wrapper for [farasa](http://qatsdemo.cloudapp.net/farasa/) [[http://qatsdemo.cloudapp.net/farasa/](http://qatsdemo.cloudapp.net/farasa/)] toolkit. Although this work is licsenced under MIT, the original work(the toolkit) is __strictly premitted for research purposes only__. For any commercial uses, please contact the toolkit creators.
 
  ## Introduction
  Farasa is  an Arabic NLP toolkit serving the following tasks:
