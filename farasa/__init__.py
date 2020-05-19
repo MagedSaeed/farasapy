@@ -1,5 +1,5 @@
-from ._ner import FarasaNamedEntityRecognizer
-from ._pos import FarasaPOSTagger
-from ._diacratizer import FarasaDiacritizer
-from ._stemmer import FarasaStemmer
-from ._segmenter import FarasaSegmenter
+# from .ner import FarasaNamedEntityRecognizer
+# from .pos import FarasaPOSTagger
+# from .diacratizer import FarasaDiacritizer
+# from .stemmer import FarasaStemmer
+# from .segmenter import FarasaSegmenter

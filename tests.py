@@ -1,8 +1,8 @@
-from farasa import FarasaPOSTagger,\
-                    FarasaSegmenter,\
-                    FarasaNamedEntityRecognizer,\
-                    FarasaStemmer,\
-                    FarasaDiacritizer
+from farasa.pos import FarasaPOSTagger
+from farasa.ner import FarasaNamedEntityRecognizer
+from farasa.diacratizer import FarasaDiacritizer
+from farasa.segmenter import FarasaSegmenter
+from farasa.stemmer import FarasaStemmer
 
 
 # https://r12a.github.io/scripts/tutorial/summaries/arabic

@@ -1,5 +1,9 @@
-import setuptools
 
+from pathlib import Path
+from setuptools.command.install import install
+import setuptools
+import time
+import atexit
 
 
 with open("README.md", "r") as fh:
@@ -13,15 +17,19 @@ setuptools.setup(
 	author_email="mageedsaeed1@gmail.com",
 	description="A Python Wrapper for the well Farasa toolkit",
 	long_description=long_description,
-	long_description__content_type="text/markdonw",
+	long_description_content_type="text/markdonw",
 	url="https://github.com/MagedSaeed/farasapy",
 	packages=['farasa'],
 	package_dir = {'farasa':'farasa'},
-	package_data={'farasa':['farasa_bin/*','farasa_bin/lib/*','tmp/*']},
 	classifiers=[
-		"Programming Language :: Python :: 3",
-		"License :: GPL",
-		"Operating System :: cross-platform",
+		"Programming Language :: Python :: 3.6",
+		"License :: OSI Approved :: MIT License",
+		"Operating System :: OS Independent",
+		'Development Status :: 4 - Beta',
+		'Topic :: Text Processing :: Linguistic',
+		'Natural Language :: Arabic',
+		'Intended Audience :: Science/Research',
+		'Environment :: Console',
 	],
 	python_requires='>=3.6',
 )

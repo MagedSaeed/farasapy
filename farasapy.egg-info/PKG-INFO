@@ -1,4 +1,4 @@
-Metadata-Version: 1.1
+Metadata-Version: 2.1
 Name: farasapy
 Version: 0.0.1
 Summary: A Python Wrapper for the well Farasa toolkit
@@ -6,8 +6,41 @@ Home-page: https://github.com/MagedSaeed/farasapy
 Author: MagedSaeed
 Author-email: mageedsaeed1@gmail.com
 License: UNKNOWN
-Description: UNKNOWN
+Description: ## Disclaimer
+        
+        This is a Pyhton API wrapper for [farasa](http://qatsdemo.cloudapp.net/farasa/) [[http://qatsdemo.cloudapp.net/farasa/](http://qatsdemo.cloudapp.net/farasa/)] toolkit. Although this work is licsenced under MIT, the original work is strictly premitted for research purposes only. For any commercial uses, please contact the toolkit creators.
+        
+         ## Introduction
+         Farasa is  an Arabic NLP toolkit serving the following tasks:
+         1. Segmentation
+         2. Stemming
+         3. Named Entity Recgonition (NER).
+         4. Part Of Speech tagging (POS tagging).
+         5. Diacritization.
+        
+        The toolkit is built with Java. Developers who want to use it can call the binaries API directly from their code.
+        As Pyhton is a general purpose language and so popular for many NLP tasks, an automation to these calls to the toolkit from the code would be convenient. This is where this wrapper fits.
+        
+        ## Installation
+        TBA
+        ## How to use
+        TBA
+        ## Want to cite?
+        TBA
+        ## Useful URLs
+        http://alt.qcri.org/farasa/
+        <!--stackedit_data:
+        eyJoaXN0b3J5IjpbNDUzMDA3MDIyLC02NDkwMjE0NSwzNTg2NT
+        MzOTJdfQ==
+        -->
 Platform: UNKNOWN
-Classifier: Programming Language :: Python :: 3
-Classifier: License :: GPL
-Classifier: Operating System :: cross-platform
+Classifier: Programming Language :: Python :: 3.6
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Development Status :: 4 - Beta
+Classifier: Topic :: Text Processing :: Linguistic
+Classifier: Natural Language :: Arabic
+Classifier: Intended Audience :: Science/Research
+Classifier: Environment :: Console
+Requires-Python: >=3.6
+Description-Content-Type: text/markdonw

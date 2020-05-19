@@ -11,3 +11,4 @@ pip-delete-this-directory.txt
 *.log
 *.pot
 dist/
+farasa_bin_obselete/
