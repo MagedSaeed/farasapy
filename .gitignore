@@ -10,5 +10,6 @@ pip-delete-this-directory.txt
 .cache
 *.log
 *.pot
-dist/
 farasa_bin_obselete/
+lib/
+dist/

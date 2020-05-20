@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: farasapy
-Version: 0.0.1
+Version: 0.0.3
 Summary: A Python Wrapper for the well Farasa toolkit
 Home-page: https://github.com/MagedSaeed/farasapy
 Author: MagedSaeed
@@ -8,7 +8,7 @@ Author-email: mageedsaeed1@gmail.com
 License: UNKNOWN
 Description: ## Disclaimer
         
-        This is a Pyhton API wrapper for [farasa](http://qatsdemo.cloudapp.net/farasa/) [[http://qatsdemo.cloudapp.net/farasa/](http://qatsdemo.cloudapp.net/farasa/)] toolkit. Although this work is licsenced under MIT, the original work is strictly premitted for research purposes only. For any commercial uses, please contact the toolkit creators.
+        This is a Pyhton API wrapper for [farasa](http://qatsdemo.cloudapp.net/farasa/) [[http://qatsdemo.cloudapp.net/farasa/](http://qatsdemo.cloudapp.net/farasa/)] toolkit. Although this work is licsenced under MIT, the original work(the toolkit) is __strictly premitted for research purposes only__. For any commercial uses, please contact the toolkit creators.
         
          ## Introduction
          Farasa is  an Arabic NLP toolkit serving the following tasks:
@@ -33,6 +33,7 @@ Description: ## Disclaimer
         eyJoaXN0b3J5IjpbNDUzMDA3MDIyLC02NDkwMjE0NSwzNTg2NT
         MzOTJdfQ==
         -->
+        
 Platform: UNKNOWN
 Classifier: Programming Language :: Python :: 3.6
 Classifier: License :: OSI Approved :: MIT License
@@ -43,4 +44,4 @@ Classifier: Natural Language :: Arabic
 Classifier: Intended Audience :: Science/Research
 Classifier: Environment :: Console
 Requires-Python: >=3.6
-Description-Content-Type: text/markdonw
+Description-Content-Type: text/markdown
