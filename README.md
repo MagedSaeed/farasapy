@@ -38,7 +38,9 @@ As Pyhton is a general purpose language and so popular for many NLP tasks, an au
 
 # Installation
 
-TBA
+```
+pip install farasapy
+```
 
 # How to use
 
