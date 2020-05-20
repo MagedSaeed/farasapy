@@ -13,3 +13,5 @@ pip-delete-this-directory.txt
 farasa_bin_obselete/
 lib/
 dist/
+farasa/farasa_bin/
+farasa/__obselete.py
