@@ -44,10 +44,14 @@ pip install farasapy
 
 # How to use
 
+> An interactive Google colab code of the library can be reached from here [https://colab.research.google.com/drive/1xjzYwmfAszNzfR6Z2lSQi3nKYcjarXAW?usp=sharing]. 
+
 ## AN IMPORTANT REMARK
 
 
-The library, as it is a warpper for Java jars, requires that **Java is installed in your system** and is **in your PATH**. It is, also, not recommended to have a version below Java 1.7.
+- The library, as it is a warpper for Java jars, requires that **Java is installed in your system** and is **in your PATH**. It is, also, not recommended to have a version below Java 1.7.
+
+- Some binaries are computionally HEAVY!
 
 ## An Overview
 
