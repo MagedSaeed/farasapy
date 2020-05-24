@@ -16,6 +16,7 @@
 ![Downloads](https://img.shields.io/pypi/dw/farasapy)
 ![License](https://img.shields.io/github/license/magedsaeed/farasapy?style=plastic)
 ![PythonVersion](https://img.shields.io/badge/Python-%2B%3D3.6-brightgreen)
+![PyPiVersion](https://img.shields.io/pypi/v/farasapy?style=plastic)
 
 
 # Disclaimer
