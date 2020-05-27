@@ -15,14 +15,17 @@ from tqdm import tqdm
 class FarasaBase:
     task = None
     __base_dir = Path(__file__).parent.absolute()
-    __bin_dir = f'{__base_dir}/farasa_bin'
-    __bin_lib_dir = f'{__bin_dir}/lib'
+    __bin_dir = Path(f'{__base_dir}/farasa_bin')
+    __bin_lib_dir = Path(f'{__bin_dir}/lib')
+
+    # shlex not compatible with Windows replace it with list()
+    __BASE_CMD = ['java', '-jar']
     __APIs = {
-        'segment':shlex.split(f'java -jar {__bin_lib_dir}/FarasaSegmenterJar.jar'),
-        'stem' : shlex.split(f'java -jar {__bin_lib_dir}/FarasaSegmenterJar.jar -l true'),
-        'NER' : shlex.split(f'java -jar {__bin_dir}/FarasaNERJar.jar'),
-        'POS' : shlex.split(f'java -jar {__bin_dir}/FarasaPOSJar.jar'),
-        'diacritize' : shlex.split(f'java -jar {__bin_dir}/FarasaDiacritizeJar.jar'),
+        'segment': __BASE_CMD + [str(__bin_lib_dir / 'FarasaSegmenterJar.jar')],
+        'stem': __BASE_CMD + [str(__bin_lib_dir / 'FarasaSegmenterJar.jar'), '-l', 'true'],
+        'NER': __BASE_CMD + [str(__bin_dir / 'FarasaNERJar.jar')],
+        'POS': __BASE_CMD + [str(__bin_dir / 'FarasaPOSJar.jar')],
+        'diacritize': __BASE_CMD + [str(__bin_dir / 'FarasaDiacritizeJar.jar')]
     }
     __interactive = False
     __task_proc = None
