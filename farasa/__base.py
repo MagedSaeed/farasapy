@@ -115,20 +115,19 @@ class FarasaBase:
             print(proc_err)
             raise Exception("We could not check for java version on the machine. Please make sure you have installed Java 1.7+ and add it to your PATH.")
 
-
     def _run_task(self, btext):
         assert btext is not None
-        with tempfile.NamedTemporaryFile(dir=f'{self.__base_dir}/tmp',) as itmp,\
-                    tempfile.NamedTemporaryFile(dir=f'{self.__base_dir}/tmp',) as otmp:
+        with tempfile.NamedTemporaryFile(dir=f'{self.__base_dir}/tmp', delete=False) as itmp, \
+                tempfile.NamedTemporaryFile(dir=f'{self.__base_dir}/tmp', delete=False) as otmp:
             itmp.write(btext)
-            itmp.flush() # https://stackoverflow.com/questions/46004774/python-namedtemporaryfile-appears-empty-even-after-data-is-written
-            proc = subprocess.run(self.__APIs[self.task]+['-i',itmp.name,'-o',otmp.name],\
-                                    capture_output=True)
+            itmp.flush()  # https://stackoverflow.com/questions/46004774/python-namedtemporaryfile-appears-empty-even-after-data-is-written
+            proc = subprocess.run(self.__APIs[self.task] + ['-i', itmp.name, '-o', otmp.name], \
+                                  capture_output=True)
             if proc.returncode == 0:
                 return otmp.read().decode('utf8').strip()
             else:
-                print("error occured!",otmp.read().decode('utf8').strip())
-                print("return code:",proc.returncode)
+                print("error occurred!", proc.stderr)
+                print("return code:", proc.returncode)
                 raise Exception('Internal Error occured!')
 
     
