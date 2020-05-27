@@ -19,7 +19,8 @@ class FarasaBase:
     __bin_lib_dir = Path(f'{__bin_dir}/lib')
 
     # shlex not compatible with Windows replace it with list()
-    __BASE_CMD = ['java', '-jar']
+    # set java encoding with option `-Dfile.encoding=UTF-8`
+    __BASE_CMD = ['java', '-Dfile.encoding=UTF-8', '-jar']
     __APIs = {
         'segment': __BASE_CMD + [str(__bin_lib_dir / 'FarasaSegmenterJar.jar')],
         'stem': __BASE_CMD + [str(__bin_lib_dir / 'FarasaSegmenterJar.jar'), '-l', 'true'],
