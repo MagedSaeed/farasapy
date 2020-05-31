@@ -1,8 +1,8 @@
 from .__base import FarasaBase
 
-class FarasaPOSTagger(FarasaBase):
 
+class FarasaPOSTagger(FarasaBase):
     task = 'POS'
 
-    def tag(self,text):
+    def tag(self, text):
         return self._do_task(text=text)
