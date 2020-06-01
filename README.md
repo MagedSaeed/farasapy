@@ -17,7 +17,7 @@
 ![License](https://img.shields.io/github/license/magedsaeed/farasapy?style=plastic)
 ![PythonVersion](https://img.shields.io/pypi/pyversions/farasapy)
 ![PyPiVersion](https://img.shields.io/pypi/v/farasapy?style=plastic)
-[<img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/>](https://colab.research.google.com/drive/1xjzYwmfAszNzfR6Z2lSQi3nKYcjarXAW)
+![<img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/>](https://colab.research.google.com/drive/1xjzYwmfAszNzfR6Z2lSQi3nKYcjarXAW)
 
 # Disclaimer
 
