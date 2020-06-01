@@ -1,3 +1,4 @@
+import os
 import sys
 import subprocess
 import warnings
@@ -112,18 +113,28 @@ class FarasaBase:
 
     def _run_task(self, btext):
         assert btext is not None
-        with tempfile.NamedTemporaryFile(dir=f'{self.__base_dir}/tmp', delete=False) as itmp, \
-                tempfile.NamedTemporaryFile(dir=f'{self.__base_dir}/tmp', delete=False) as otmp:
+        tmpdir = str(self.__base_dir / 'tmp')
+        # if delete=True on Windows cannot get any content
+        # https://docs.python.org/3/library/tempfile.html#tempfile.NamedTemporaryFile
+        itmp = tempfile.NamedTemporaryFile(dir=tmpdir, delete=False)
+        otmp = tempfile.NamedTemporaryFile(dir=tmpdir, delete=False)
+        try:
             itmp.write(btext)
-            itmp.flush()  # https://stackoverflow.com/questions/46004774/python-namedtemporaryfile-appears-empty-even-after-data-is-written
-            proc = subprocess.run(self.__APIs[self.task] + ['-i', itmp.name, '-o', otmp.name], \
-                                  capture_output=True)
+            # https://stackoverflow.com/questions/46004774/python-namedtemporaryfile-appears-empty-even-after-data-is-written
+            itmp.flush()
+            proc = subprocess.run(self.__APIs[self.task] + ['-i', itmp.name, '-o', otmp.name], capture_output=True)
             if proc.returncode == 0:
-                return otmp.read().decode('utf8').strip()
+                result = otmp.read().decode('utf8').strip()
             else:
-                print("error occurred!", proc.stderr)
+                print("error occurred! stdout: ", proc.stdout, ' stderr: ', proc.stderr)
                 print("return code:", proc.returncode)
-                raise Exception('Internal Error occured!')
+                raise Exception('Internal Error occurred!')
+        finally:
+            itmp.close()
+            otmp.close()
+            os.unlink(itmp.name)
+            os.unlink(otmp.name)
+        return result
 
     def _run_task_interactive(self, btext):
         assert btext is not None and type(btext) == bytes
@@ -159,4 +170,3 @@ class FarasaBase:
 
     def terminate(self):
         self.__task_proc.terminate()
-
