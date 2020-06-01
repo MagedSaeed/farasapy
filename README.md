@@ -12,7 +12,9 @@
 - [Want to cite?](#want-to-cite)
 - [Useful URLs](#useful-urls)
 
+<p align="center"> 
 [![openInColab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1xjzYwmfAszNzfR6Z2lSQi3nKYcjarXAW)
+</p>
 
 ![Downloads](https://img.shields.io/pypi/dw/farasapy)
 ![License](https://img.shields.io/github/license/magedsaeed/farasapy?style=plastic)
