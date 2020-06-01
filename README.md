@@ -12,11 +12,8 @@
 - [Want to cite?](#want-to-cite)
 - [Useful URLs](#useful-urls)
 
-<a href="https://colab.research.google.com/drive/1xjzYwmfAszNzfR6Z2lSQi3nKYcjarXAW" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
-
-
 <p align="center"> 
-[![openInColab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1xjzYwmfAszNzfR6Z2lSQi3nKYcjarXAW)
+<a href="https://colab.research.google.com/drive/1xjzYwmfAszNzfR6Z2lSQi3nKYcjarXAW" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 </p>
 
 ![Downloads](https://img.shields.io/pypi/dw/farasapy)
