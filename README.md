@@ -17,6 +17,7 @@
 ![License](https://img.shields.io/github/license/magedsaeed/farasapy?style=plastic)
 ![PythonVersion](https://img.shields.io/pypi/pyversions/farasapy)
 ![PyPiVersion](https://img.shields.io/pypi/v/farasapy?style=plastic)
+<a href=\"https://colab.research.google.com/github/google/sentencepiece/blob/master/python/sentencepiece_python_module_example.ipynb\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>
 
 
 # Disclaimer
