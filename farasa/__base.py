@@ -1,9 +1,7 @@
 import os
 import sys
 import subprocess
-import shlex
 import warnings
-import time
 import re
 import tempfile
 from pathlib import Path
@@ -16,14 +14,18 @@ from tqdm import tqdm
 class FarasaBase:
     task = None
     __base_dir = Path(__file__).parent.absolute()
-    __bin_dir = f'{__base_dir}/farasa_bin'
-    __bin_lib_dir = f'{__bin_dir}/lib'
+    __bin_dir = Path(f'{__base_dir}/farasa_bin')
+    __bin_lib_dir = Path(f'{__bin_dir}/lib')
+
+    # shlex not compatible with Windows replace it with list()
+    # set java encoding with option `-Dfile.encoding=UTF-8`
+    __BASE_CMD = ['java', '-Dfile.encoding=UTF-8', '-jar']
     __APIs = {
-        'segment': shlex.split(f'java -jar {__bin_lib_dir}/FarasaSegmenterJar.jar'),
-        'stem': shlex.split(f'java -jar {__bin_lib_dir}/FarasaSegmenterJar.jar -l true'),
-        'NER': shlex.split(f'java -jar {__bin_dir}/FarasaNERJar.jar'),
-        'POS': shlex.split(f'java -jar {__bin_dir}/FarasaPOSJar.jar'),
-        'diacritize': shlex.split(f'java -jar {__bin_dir}/FarasaDiacritizeJar.jar'),
+        'segment': __BASE_CMD + [str(__bin_lib_dir / 'FarasaSegmenterJar.jar')],
+        'stem': __BASE_CMD + [str(__bin_lib_dir / 'FarasaSegmenterJar.jar'), '-l', 'true'],
+        'NER': __BASE_CMD + [str(__bin_dir / 'FarasaNERJar.jar')],
+        'POS': __BASE_CMD + [str(__bin_dir / 'FarasaPOSJar.jar')],
+        'diacritize': __BASE_CMD + [str(__bin_dir / 'FarasaDiacritizeJar.jar')]
     }
     __interactive = False
     __task_proc = None
@@ -55,8 +57,9 @@ class FarasaBase:
             if not Path(f'{self.__bin_dir}/{jar}.jar').is_file():
                 download = True
                 break
-        # last check for binaries in farasa_bin/lib
-        if download or not Path(f'{self.__bin_lib_dir}/FarasaSegmenterJar.jar').is_file():
+
+        if download or not Path(
+                f'{self.__bin_lib_dir}/FarasaSegmenterJar.jar').is_file():  # last check for binaries in farasa_bin/lib
             print("some binaries are not existed..")
             self._download_binaries()
 
@@ -72,7 +75,6 @@ class FarasaBase:
                 content = data
             else:
                 content += data
-        bar.close()
         return content
 
     def _download_binaries(self):
@@ -121,18 +123,30 @@ class FarasaBase:
 
     def _run_task(self, btext):
         assert btext is not None
-        with tempfile.NamedTemporaryFile(dir=f'{self.__base_dir}/tmp',) as itmp,\
-                tempfile.NamedTemporaryFile(dir=f'{self.__base_dir}/tmp',) as otmp:
+        tmpdir = str(self.__base_dir / 'tmp')
+        # if delete=True on Windows cannot get any content
+        # https://docs.python.org/3/library/tempfile.html#tempfile.NamedTemporaryFile
+        itmp = tempfile.NamedTemporaryFile(dir=tmpdir, delete=False)
+        otmp = tempfile.NamedTemporaryFile(dir=tmpdir, delete=False)
+        try:
             itmp.write(btext)
-            itmp.flush()  # https://stackoverflow.com/questions/46004774/python-namedtemporaryfile-appears-empty-even-after-data-is-written
+            # https://stackoverflow.com/questions/46004774/python-namedtemporaryfile-appears-empty-even-after-data-is-written
+            itmp.flush()
             proc = subprocess.run(
-                self.__APIs[self.task]+['-i', itmp.name, '-o', otmp.name],)
+                self.__APIs[self.task] + ['-i', itmp.name, '-o', otmp.name], capture_output=True)
             if proc.returncode == 0:
-                return otmp.read().decode('utf8').strip()
+                result = otmp.read().decode('utf8').strip()
             else:
-                print("error occured!", otmp.read().decode('utf8').strip())
+                print("error occurred! stdout: ",
+                      proc.stdout, ' stderr: ', proc.stderr)
                 print("return code:", proc.returncode)
-                raise Exception('Internal Error occured!')
+                raise Exception('Internal Error occurred!')
+        finally:
+            itmp.close()
+            otmp.close()
+            os.unlink(itmp.name)
+            os.unlink(otmp.name)
+        return result
 
     def _run_task_interactive(self, btext):
         assert btext is not None and type(btext) == bytes
@@ -148,7 +162,7 @@ class FarasaBase:
     def _do_task_interactive(self, strip_text):
         outputs = []
         for line in strip_text.split('\n'):
-            newlined_line = line+'\n'
+            newlined_line = line + '\n'
             byted_newlined_line = str.encode(newlined_line)
             output = self._run_task_interactive(byted_newlined_line)
             if output:

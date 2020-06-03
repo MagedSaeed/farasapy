@@ -2,6 +2,7 @@
 __pycache__/
 *.py[cod]
 farasa/__pycache__/
+venv/
 
 # Installer logs
 pip-log.txt
