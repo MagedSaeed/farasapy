@@ -152,7 +152,8 @@ class FarasaBase:
             itmp.flush()
             proc = subprocess.run(
                 self.__APIs[self.task] + ["-i", itmp.name, "-o", otmp.name],
-                capture_output=True,
+                # this only compatiple with python>3.6
+                # capture_output=True,
             )
             if proc.returncode == 0:
                 result = otmp.read().decode("utf8").strip()
