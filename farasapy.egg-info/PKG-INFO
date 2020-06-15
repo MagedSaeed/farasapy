@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: farasapy
-Version: 0.0.3
+Version: 0.0.5
 Summary: A Python Wrapper for the well Farasa toolkit
 Home-page: https://github.com/MagedSaeed/farasapy
 Author: MagedSaeed
@@ -20,11 +20,14 @@ Description:
         - [Want to cite?](#want-to-cite)
         - [Useful URLs](#useful-urls)
         
+        <p align="center"> 
+        <a href="https://colab.research.google.com/drive/1xjzYwmfAszNzfR6Z2lSQi3nKYcjarXAW" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
+        </p>
         
         ![Downloads](https://img.shields.io/pypi/dw/farasapy)
         ![License](https://img.shields.io/github/license/magedsaeed/farasapy?style=plastic)
-        ![PythonVersion](https://img.shields.io/badge/Python-%2B%3D3.6-brightgreen)
-        
+        ![PythonVersion](https://img.shields.io/pypi/pyversions/farasapy)
+        ![PyPiVersion](https://img.shields.io/pypi/v/farasapy?style=plastic)
         
         # Disclaimer
         
@@ -52,10 +55,14 @@ Description:
         
         # How to use
         
+        > An interactive Google colab code of the library can be reached from here [https://colab.research.google.com/drive/1xjzYwmfAszNzfR6Z2lSQi3nKYcjarXAW?usp=sharing]. 
+        
         ## AN IMPORTANT REMARK
         
         
-        The library, as it is a warpper for Java jars, requires that **Java is installed in your system** and is **in your PATH**. It is, also, not recommended to have a version below Java 1.7.
+        - The library, as it is a warpper for Java jars, requires that **Java is installed in your system** and is **in your PATH**. It is, also, not recommended to have a version below Java 1.7.
+        
+        - Some binaries are computionally HEAVY!
         
         ## An Overview
         
