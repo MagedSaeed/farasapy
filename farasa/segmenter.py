@@ -2,7 +2,7 @@ from .__base import FarasaBase
 
 
 class FarasaSegmenter(FarasaBase):
-    task = 'segment'
+    task = "segment"
 
     def segment(self, text):
         return self._do_task(text=text)
