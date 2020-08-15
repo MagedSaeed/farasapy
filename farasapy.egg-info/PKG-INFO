@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: farasapy
-Version: 0.0.5
+Version: 0.0.7
 Summary: A Python Wrapper for the well Farasa toolkit
 Home-page: https://github.com/MagedSaeed/farasapy
 Author: MagedSaeed
@@ -17,6 +17,7 @@ Description:
           - [An Overview](#an-overview)
             - [Standalone Mode](#standalone-mode)
             - [Interactive Mode](#interactive-mode)
+        - [Contribution](#contribution)
         - [Want to cite?](#want-to-cite)
         - [Useful URLs](#useful-urls)
         
@@ -138,6 +139,10 @@ Description:
         print(segmented)
         'يشار إلى أن ال+لغ+ة ال+عربي+ة يتحدث+ها أكثر من 422 مليون نسم+ة و+يتوزع متحدثوها في ال+منطق+ة ال+معروف+ة باسم ال+وطن ال+عربي ب+ال+إضاف+ة إلى ال+عديد من ال+مناطق ال+أخرى ال+مجاور+ة مثل ال+أهواز و+تركيا و+تشاد و+ال+سنغال و+إريتريا و+غير+ها . و+هي ال+لغ+ة ال+رابع+ة من لغ+ات منظم+ة ال+أمم ال+متحد+ة ال+رسمي+ة ال+ست .'
         ```
+        
+        # Contribution
+        
+        - The credit of desegmentation code goes for @Wissam Antoun [https://github.com/WissamAntoun/Farasa_Desegmenter] in his repository [https://github.com/WissamAntoun/Farasa_Desegmenter].
         
         # Want to cite?
         
