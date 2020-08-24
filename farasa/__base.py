@@ -34,25 +34,25 @@ class FarasaBase:
     __task_proc = None
 
     def __init__(self, interactive=False):
-        print("perform system check...")
-        print("check java version...")
+        logging.debug("perform system check...")
+        logging.debug("check java version...")
         self._check_java_version()
-        print("check toolkit binaries...")
+        logging.debug("check toolkit binaries...")
         self._check_toolkit_binaries()
         Path(f"{self.__base_dir}/tmp").mkdir(exist_ok=True)
-        print("Dependencies seem to be satisfied..")
+        logging.info("Dependencies seem to be satisfied..")
         if interactive:
             self.__interactive = True
-            warnings.warn(
+            logging.warning(
                 "Be careful with large lines as they may break on interactive mode. You may switch to Standalone mode for such cases."
             )
-            print(
+            logging.info(
                 f"\033[37minitializing [{self.task.upper()}] task in \033[32mINTERACTIVE \033[37mmode..."
             )
             self._initialize_task()
-            print(f"task [{self.task.upper()}] is initialized interactively.")
+            logging.info(f"task [{self.task.upper()}] is initialized interactively.")
         else:
-            print(
+            logging.info(
                 f"task [{self.task.upper()}] is initialized in \033[34mSTANDALONE \033[37mmode..."
             )
 
@@ -68,7 +68,7 @@ class FarasaBase:
             download
             or not Path(f"{self.__bin_lib_dir}/FarasaSegmenterJar.jar").is_file()
         ):  # last check for binaries in farasa_bin/lib
-            print("some binaries are not existed..")
+            logging.info("some binaries are not existed.")
             self._download_binaries()
 
     def _get_content_with_progressbar(self, request):
@@ -92,7 +92,7 @@ class FarasaBase:
         return content
 
     def _download_binaries(self):
-        print("downloading zipped binaries...")
+        logging.info("downloading zipped binaries...")
         try:
             # change download url from github releases to qcri
             # binaries_url = "https://github.com/MagedSaeed/farasapy/releases/download/toolkit-bins-released/farasa_bin.zip"
@@ -103,21 +103,24 @@ class FarasaBase:
             print("extracting...")
             binzip = zipfile.ZipFile(io.BytesIO(content_bytes))
             binzip.extractall(path=self.__base_dir)
-            print("toolkit binaries are downloaded and extracted.")
+            logging.debug("toolkit binaries are downloaded and extracted.")
         except Exception as e:
-            print("an error occured")
-            print(e)
+            logging.error("an error occured")
+            logging.error(e)
 
-    def _initialize_task(self):
-        word = "اختبار"
-        word += "\n"
-        bword = str.encode(word)
+    def __initialize_task_proc(self):
         self.__task_proc = subprocess.Popen(
             self.__APIs[self.task],
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )
+
+    def _initialize_task(self):
+        word = "اختبار"
+        word += "\n"
+        bword = str.encode(word)
+        self.__initialize_task_proc()
         return self._run_task_interactive(bword)
 
     def _check_java_version(self):
@@ -156,14 +159,18 @@ class FarasaBase:
             itmp.flush()
             proc = subprocess.run(
                 self.__APIs[self.task] + ["-i", itmp.name, "-o", otmp.name],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
                 # this only compatiple with python>3.6
                 # capture_output=True,
             )
             if proc.returncode == 0:
                 result = otmp.read().decode("utf8").strip()
             else:
-                print("error occurred! stdout: ", proc.stdout, " stderr: ", proc.stderr)
-                print("return code:", proc.returncode)
+                logging.critical(
+                    f"error occurred! stdout: , {proc.stdout},  stderr: , {proc.stderr}"
+                )
+                logging.critical(f"return code: {proc.returncode}")
                 raise Exception("Internal Error occurred!")
         finally:
             itmp.close()
@@ -173,12 +180,14 @@ class FarasaBase:
         return result
 
     def _run_task_interactive(self, btext):
-        assert btext is not None and type(btext) == bytes
-        assert self.__interactive == True
-        assert self.__task_proc is not None
-        self.__task_proc.stdin.flush()
-        self.__task_proc.stdin.write(btext)
-        self.__task_proc.stdin.flush()
+        assert isinstance(btext, bytes)
+        assert self.__interactive
+        if self.__task_proc:
+            self.__task_proc.stdin.flush()
+            self.__task_proc.stdin.write(btext)
+            self.__task_proc.stdin.flush()
+        else:
+            self.__initialize_task_proc()
         output = self.__task_proc.stdout.readline().decode("utf8").strip()
         self.__task_proc.stdout.flush()
         return output
