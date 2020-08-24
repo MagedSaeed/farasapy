@@ -33,7 +33,8 @@ class FarasaBase:
     __interactive = False
     __task_proc = None
 
-    def __init__(self, interactive=False):
+    def __init__(self, interactive=False, logging_level="DEBUG"):
+        logging.basicConfig(level=logging_level)
         logging.debug("perform system check...")
         logging.debug("check java version...")
         self._check_java_version()
