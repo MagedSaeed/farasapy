@@ -34,26 +34,29 @@ class FarasaBase:
     __task_proc = None
 
     def __init__(self, interactive=False, logging_level="DEBUG"):
-        logging.basicConfig(level=logging_level)
-        logging.debug("perform system check...")
-        logging.debug("check java version...")
+        self.logger = logging.getLogger()
+        self.logger.setLevel(logging_level.upper())
+        self.logger.debug("perform system check...")
+        self.logger.debug("check java version...")
         self._check_java_version()
-        logging.debug("check toolkit binaries...")
+        self.logger.debug("check toolkit binaries...")
         self._check_toolkit_binaries()
         Path(f"{self.__base_dir}/tmp").mkdir(exist_ok=True)
-        logging.info("Dependencies seem to be satisfied..")
+        self.logger.info("Dependencies seem to be satisfied..")
         if interactive:
             self.__interactive = True
-            logging.warning(
+            self.logger.warning(
                 "Be careful with large lines as they may break on interactive mode. You may switch to Standalone mode for such cases."
             )
-            logging.info(
+            self.logger.info(
                 f"\033[37minitializing [{self.task.upper()}] task in \033[32mINTERACTIVE \033[37mmode..."
             )
             self._initialize_task()
-            logging.info(f"task [{self.task.upper()}] is initialized interactively.")
+            self.logger.info(
+                f"task [{self.task.upper()}] is initialized interactively."
+            )
         else:
-            logging.info(
+            self.logger.info(
                 f"task [{self.task.upper()}] is initialized in \033[34mSTANDALONE \033[37mmode..."
             )
 
@@ -69,7 +72,7 @@ class FarasaBase:
             download
             or not Path(f"{self.__bin_lib_dir}/FarasaSegmenterJar.jar").is_file()
         ):  # last check for binaries in farasa_bin/lib
-            logging.info("some binaries are not existed.")
+            self.logger.info("some binaries are not existed.")
             self._download_binaries()
 
     def _get_content_with_progressbar(self, request):
@@ -93,7 +96,7 @@ class FarasaBase:
         return content
 
     def _download_binaries(self):
-        logging.info("downloading zipped binaries...")
+        self.logger.info("downloading zipped binaries...")
         try:
             # change download url from github releases to qcri
             # binaries_url = "https://github.com/MagedSaeed/farasapy/releases/download/toolkit-bins-released/farasa_bin.zip"
@@ -101,13 +104,13 @@ class FarasaBase:
             binaries_request = requests.get(binaries_url, stream=True)
             # show the progress bar while getting content
             content_bytes = self._get_content_with_progressbar(binaries_request)
-            print("extracting...")
+            self.logger.debug("extracting...")
             binzip = zipfile.ZipFile(io.BytesIO(content_bytes))
             binzip.extractall(path=self.__base_dir)
-            logging.debug("toolkit binaries are downloaded and extracted.")
+            self.logger.debug("toolkit binaries are downloaded and extracted.")
         except Exception as e:
-            logging.error("an error occured")
-            logging.error(e)
+            self.logger.error("an error occured")
+            self.logger.error(e)
 
     def __initialize_task_proc(self):
         self.__task_proc = subprocess.Popen(
@@ -134,7 +137,7 @@ class FarasaBase:
                 re.search(version_pattern, version_proc_output).groups()[0]
             )
             if java_version >= 1.7:
-                print(
+                self.logger.debug(
                     f"Your java version is {java_version} which is compatiple with Farasa "
                 )
             else:
@@ -142,7 +145,7 @@ class FarasaBase:
                     "You are using old version of java. Farasa is compatiple with Java 7 and above "
                 )
         except subprocess.CalledProcessError as proc_err:
-            print(proc_err)
+            self.logger.error(f"error occured: {proc_err}.")
             raise Exception(
                 "We could not check for java version on the machine. Please make sure you have installed Java 1.7+ and add it to your PATH."
             )
@@ -168,10 +171,10 @@ class FarasaBase:
             if proc.returncode == 0:
                 result = otmp.read().decode("utf8").strip()
             else:
-                logging.critical(
+                self.logger.critical(
                     f"error occurred! stdout: , {proc.stdout},  stderr: , {proc.stderr}"
                 )
-                logging.critical(f"return code: {proc.returncode}")
+                self.logger.critical(f"return code: {proc.returncode}")
                 raise Exception("Internal Error occurred!")
         finally:
             itmp.close()
@@ -183,12 +186,19 @@ class FarasaBase:
     def _run_task_interactive(self, btext):
         assert isinstance(btext, bytes)
         assert self.__interactive
-        if self.__task_proc:
+        try:
             self.__task_proc.stdin.flush()
             self.__task_proc.stdin.write(btext)
             self.__task_proc.stdin.flush()
-        else:
+        except BrokenPipeError as broken_pipe:
+            self.logger.error(
+                f"pipe broke! error code and message: [{broken_pipe}]. reinitailize the process.., This may take sometime depending on the running task"
+            )
             self.__initialize_task_proc()
+            self.__task_proc.stdin.flush()
+            self.__task_proc.stdin.write(btext)
+            self.__task_proc.stdin.flush()
+
         output = self.__task_proc.stdout.readline().decode("utf8").strip()
         self.__task_proc.stdout.flush()
         return output
