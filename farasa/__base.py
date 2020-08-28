@@ -32,10 +32,10 @@ class FarasaBase:
     }
     __interactive = False
     __task_proc = None
+    logger = None
 
     def __init__(self, interactive=False, logging_level="DEBUG"):
-        self.logger = logging.getLogger()
-        self.logger.setLevel(logging_level.upper())
+        self._config_logs(logging_level)
         self.logger.debug("perform system check...")
         self.logger.debug("check java version...")
         self._check_java_version()
@@ -59,6 +59,15 @@ class FarasaBase:
             self.logger.info(
                 f"task [{self.task.upper()}] is initialized in \033[34mSTANDALONE \033[37mmode..."
             )
+
+    def _config_logs(self, logging_level):
+        self.logger = logging.getLogger()
+        self.logger.setLevel(getattr(logging, logging_level.upper()))
+        logs_formatter = logging.Formatter("[%(asctime)s - %(levelname)s]: %(message)s")
+        if not self.logger.hasHandlers():
+            stream_logger = logging.StreamHandler()
+            stream_logger.setFormatter(logs_formatter)
+            self.logger.addHandler(stream_logger)
 
     def _check_toolkit_binaries(self):
         download = False
