@@ -34,7 +34,7 @@ class FarasaBase:
     __task_proc = None
     logger = None
 
-    def __init__(self, interactive=False, logging_level="DEBUG"):
+    def __init__(self, interactive=False, logging_level="WARNING"):
         self._config_logs(logging_level)
         self.logger.debug("perform system check...")
         self.logger.debug("check java version...")
@@ -61,9 +61,12 @@ class FarasaBase:
             )
 
     def _config_logs(self, logging_level):
-        self.logger = logging.getLogger()
+        self.logger = logging.getLogger("farasapy_logger")
+        self.logger.propagate = False
         self.logger.setLevel(getattr(logging, logging_level.upper()))
-        logs_formatter = logging.Formatter("[%(asctime)s - %(levelname)s]: %(message)s")
+        logs_formatter = logging.Formatter(
+            "[%(asctime)s - %(name)s - %(levelname)s]: %(message)s"
+        )
         if not self.logger.hasHandlers():
             stream_logger = logging.StreamHandler()
             stream_logger.setFormatter(logs_formatter)
