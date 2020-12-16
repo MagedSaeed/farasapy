@@ -113,7 +113,7 @@ class FarasaBase:
             # change download url from github releases to qcri
             # binaries_url = "https://github.com/MagedSaeed/farasapy/releases/download/toolkit-bins-released/farasa_bin.zip"
             binaries_url = "https://farasa-api.qcri.org/farasapy/releases/download/toolkit-bins-released/farasa_bin.zip"
-            binaries_request = requests.get(binaries_url, stream=True)
+            binaries_request = requests.get(binaries_url, stream=True, verify=False)
             # show the progress bar while getting content
             content_bytes = self._get_content_with_progressbar(binaries_request)
             self.logger.debug("extracting...")
