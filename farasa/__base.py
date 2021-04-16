@@ -144,7 +144,8 @@ class FarasaBase:
             version_proc_output = subprocess.check_output(
                 ["java", "-version"], stderr=subprocess.STDOUT, encoding="utf8"
             )
-            version_pattern = r"\"(\d+\.\d+).*\""
+            # version_pattern = r"\"(\d+\.\d+).*\""
+            version_pattern = r"\"(\d+(\.\d+){0,1})"
             java_version = float(
                 re.search(version_pattern, version_proc_output).groups()[0]
             )
