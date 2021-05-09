@@ -24,7 +24,7 @@
 
 # Disclaimer
 
->This is a Pyhton API wrapper for [farasa](http://qatsdemo.cloudapp.net/farasa/) [[http://qatsdemo.cloudapp.net/farasa/](http://qatsdemo.cloudapp.net/farasa/)] toolkit. Although this work is licsenced under MIT, the original work(the toolkit) is __strictly premitted for research purposes only__. For any commercial uses, please contact the toolkit creators[http://qatsdemo.cloudapp.net/farasa/].
+>This is a Python API wrapper for [farasa](http://qatsdemo.cloudapp.net/farasa/) [[http://qatsdemo.cloudapp.net/farasa/](http://qatsdemo.cloudapp.net/farasa/)] toolkit. Although this work is licsenced under MIT, the original work(the toolkit) is __strictly premitted for research purposes only__. For any commercial uses, please contact the toolkit creators[http://qatsdemo.cloudapp.net/farasa/].
 
 
  # Introduction
@@ -32,13 +32,13 @@
  Farasa is  an Arabic NLP toolkit serving the following tasks:
  1. Segmentation.
  2. Stemming.
- 3. Named Entity Recgonition (NER).
+ 3. Named Entity Recognition (NER).
  4. Part Of Speech tagging (POS tagging).
  5. Diacritization.
 
 The toolkit is built and compiled in Java. Developers who want to use it without using this library may call the binaries directly from their code.
 
-As Pyhton is a general purpose language and so popular for many NLP tasks, an automation to these calls to the toolkit from the code would be convenient. This is where this wrapper fits.
+As Python is a general purpose language and so popular for many NLP tasks, an automation to these calls to the toolkit from the code would be convenient. This is where this wrapper fits.
 
 # Installation
 
@@ -53,9 +53,9 @@ pip install farasapy
 ## AN IMPORTANT REMARK
 
 
-- The library, as it is a warpper for Java jars, requires that **Java is installed in your system** and is **in your PATH**. It is, also, not recommended to have a version below Java 1.7.
+- The library, as it is a wrapper for Java jars, requires that **Java is installed in your system** and is **in your PATH**. It is, also, not recommended to have a version below Java 1.7.
 
-- Some binaries are computionally HEAVY!
+- Some binaries are computationally HEAVY!
 
 ## An Overview
 
@@ -69,7 +69,7 @@ from farasa.segmenter import FarasaSegmenter
 from farasa.stemmer import FarasaStemmer
 ```
 
-Now, If you are using the library for the first time, the library needs to download farasa toolkit binareis first. You do not need to worry about anythink. The library, whenever you instantiate an object of any of its classes, will first check for the binaries, download them if they are not existed. This is an example of instantiating an object from `FarasaStemmer` for the first use of the library.
+Now, If you are using the library for the first time, the library needs to download farasa toolkit binaries first. You do not need to worry about anything. The library, whenever you instantiate an object of any of its classes, will first check for the binaries, download them if they are not existed. This is an example of instantiating an object from `FarasaStemmer` for the first use of the library.
 
 ```
 stemmer = FarasaStemmer()
@@ -98,17 +98,17 @@ stemmed_text = stemmer.stem(sample)
 print(stemmed_text)
 'أشار إلى أن لغة عربي تحدث أكثر من 422 مليون نسمة توزع متحدثوها في منطقة معروف اسم وطن عربي إضافة إلى عديد من منطقة آخر مجاور مثل أهواز تركيا تشاد سنغال أريتريا غير . هي لغة رابع من لغة منظمة أمة متحد رسمي ست .'
 ```
-You may notice that the last line of object instantiation states that the object is instantiated in **STANDALONE** mode. Farasapy, like the toolkit binaries themself, can run in two different modes: **Interactive** and **Standalone**.
+You may notice that the last line of object instantiation states that the object is instantiated in **STANDALONE** mode. Farasapy, like the toolkit binaries themselves, can run in two different modes: **Interactive** and **Standalone**.
 
 ### Standalone Mode 
 
-In standalone mode, the instantiated object will call the binary each time it performs its task. It will put the input text in a temporary file, execute the binary with this temporary file, and finally extract the output from another temporary file. These temprary files are garbache collected once the task ends. Be careful that some binaries, *like the diacritizer*, might take very long time to start. Hence, this option is prefered when you have long text and you want to do it only once. 
+In standalone mode, the instantiated object will call the binary each time it performs its task. It will put the input text in a temporary file, execute the binary with this temporary file, and finally extract the output from another temporary file. These temporary files are garbage collected once the task ends. Be careful that some binaries, *like the diacritizer*, might take very long time to start. Hence, this option is preferred when you have long text and you want to do it only once. 
 
 ### Interactive Mode
 
-In interactive mode, the object will run the binary once instanciated. It, then, will feed the text to the binary interactively and capture the output on each input. However, the user should be careful not to put large lines as the output, just like in shells, might not be as expected. It is a good practice to *terminate* by `my_obj.terminate()` these kinds of objects once they are not needed to avoid any unexpected behaviour in your code.
+In interactive mode, the object will run the binary once instantiated. It, then, will feed the text to the binary interactively and capture the output on each input. However, the user should be careful not to put large lines as the output, just like in shells, might not be as expected. It is a good practice to *terminate* by `my_obj.terminate()` these kinds of objects once they are not needed to avoid any unexpected behaviour in your code.
 
-For best pracrices, use the **INTERACTIVE** mode where the input text is small and you need to do the task multiple times. However, The **STANDALONE** mode is the best for large input texts where the task is expected to be done only once.
+For best practices, use the **INTERACTIVE** mode where the input text is small and you need to do the task multiple times. However, The **STANDALONE** mode is the best for large input texts where the task is expected to be done only once.
 
 To work on **interactive mode**, you just need to pass `interactive=True` option to your object constructor.
 
