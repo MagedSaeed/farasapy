@@ -1,7 +1,7 @@
 import setuptools
 
 
-with open("README.md", "r") as fh:
+with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 
@@ -27,7 +27,10 @@ setuptools.setup(
         "Environment :: Console",
     ],
     python_requires=">=3.6",
-    install_requires=["requests", "tqdm",],
+    install_requires=[
+        "requests",
+        "tqdm",
+    ],
 )
 
 # scripts=['farasa/__init__.py','farasa/farasa_bin/*','farasa/farasa_bin/lib/*','farasa/tmp/*'],

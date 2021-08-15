@@ -69,22 +69,40 @@ class FarasaPOSTagger(FarasaBase):
         # ignore the first and last as they are indications of
         #  the begining and end of the string
         tagged_tokens = tagged_text.split()[1:-1]
-        if not combine_subtokens:
-            for tagged_token in tagged_tokens:
-                token, tag = tagged_token.split("/")
-                token_object = TaggedToken(token, tag)
-                if not tokens_objects:
-                    tokens_objects.append(token_object)
-                elif tokens_objects[-1].last_token[-1] == "+":
-                    tokens_objects[-1].append_connected_token(tagged_token=token_object)
-                elif token_object.last_token[0] == "+":
-                    tokens_objects[-1].append_connected_token(tagged_token=token_object)
+        subtokens = list()
+        for tagged_token in tagged_tokens:
+            slash_count = self._count_slashes(tagged_token)
+            # if there is no slash, then this must have been a subtoken
+            if slash_count == 0:
+                subtokens.append(tagged_token)
+            # check if the token has multiple slashes ex: date 19/5/1955 or a single slash
+            elif slash_count > 1:
+                token = "/".join(tagged_token.split("/")[0:-1])
+                tag = tagged_token.split("/")[-1]
+                tokens_objects.append(TaggedToken(token, tag))
+            else:
+                temp_token, temp_tag = tagged_token.split("/")
+                if len(subtokens) > 0:
+                    subtokens.append(temp_token)
+                    temp_tags = temp_tag.split("+")
+                    assert len(subtokens) == len(temp_tags)
+                    if combine_subtokens:
+                        tokens_object = TaggedToken(subtokens[0], temp_tags[0])
+                        for _token, _tag in zip(subtokens[1:], temp_tags[1:]):
+                            tokens_object.append_connected_token(token=_token, tag=_tag)
+                        tokens_objects.append(tokens_object)
+                    else:
+                        for _token, _tag in zip(subtokens, temp_tags):
+                            tokens_objects.append(TaggedToken(_token, _tag))
+                    subtokens = list()
                 else:
-                    tokens_objects.append(token_object)
-            return tokens_objects
-        else:
-            tokens_objects = [
-                TaggedToken(*tagged_token.split("/")) for tagged_token in tagged_tokens
-            ]
-            return tokens_objects
+                    tokens_objects.append(TaggedToken(temp_token, temp_tag))
+        return tokens_objects
 
+    def _count_slashes(self, text: str):
+        # this is the faster counter implementation for very short text
+        slash_counter = 0
+        for c in text:
+            if c == "/":
+                slash_counter += 1
+        return slash_counter
