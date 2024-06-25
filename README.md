@@ -24,7 +24,7 @@
 
 # Disclaimer
 
->This is a Python API wrapper for [farasa](http://qatsdemo.cloudapp.net/farasa/) [[http://qatsdemo.cloudapp.net/farasa/](http://qatsdemo.cloudapp.net/farasa/)] toolkit. Although this work is licsenced under MIT, the original work(the toolkit) is __strictly premitted for research purposes only__. For any commercial uses, please contact the toolkit creators[http://qatsdemo.cloudapp.net/farasa/].
+>This is a Python API wrapper for [farasa](http://qatsdemo.cloudapp.net/farasa/) [[http://qatsdemo.cloudapp.net/farasa/](http://qatsdemo.cloudapp.net/farasa/)] toolkit. Although this work is licsenced under MIT, the original work(the toolkit) is __strictly premitted for research purposes only__. For any commercial uses, please contact the toolkit creators[https://farasa.qcri.org/].
 
 
  # Introduction
