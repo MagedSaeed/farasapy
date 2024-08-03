@@ -7,6 +7,7 @@ import sys
 import tempfile
 import warnings
 import zipfile
+import gzip
 from pathlib import Path
 
 import requests
@@ -17,6 +18,7 @@ class FarasaBase:
     task = None
     __base_dir = Path(__file__).parent.absolute()
     __bin_dir = Path(f"{__base_dir}/farasa_bin")
+    __bin_dist_dir = Path(f"{__base_dir}/dist")
     __bin_lib_dir = Path(f"{__bin_dir}/lib")
 
     # shlex not compatible with Windows replace it with list()
@@ -29,7 +31,9 @@ class FarasaBase:
         "NER": __BASE_CMD + [str(__bin_dir / "FarasaNERJar.jar")],
         "POS": __BASE_CMD + [str(__bin_dir / "FarasaPOSJar.jar")],
         "diacritize": __BASE_CMD + [str(__bin_dir / "FarasaDiacritizeJar.jar")],
+        "depparse": __BASE_CMD + [str(__bin_dist_dir / "RBGParserWrapper.jar")],
     }
+    __APIs['depparse'].insert(1, '-Xmx4096m')
     __interactive = False
     __task_proc = None
     logger = None
@@ -83,9 +87,10 @@ class FarasaBase:
         if (
             download
             or not Path(f"{self.__bin_lib_dir}/FarasaSegmenterJar.jar").is_file()
+            or not Path(f"{self.__bin_dist_dir}/RBGParserWrapper.jar").is_file()
         ):  # last check for binaries in farasa_bin/lib
             self.logger.info("some binaries are not existed.")
-            self._download_binaries()
+            # self._download_binaries()
 
     def _get_content_with_progressbar(self, request):
         totalsize = int(request.headers.get("content-length", 0))
@@ -109,20 +114,29 @@ class FarasaBase:
 
     def _download_binaries(self):
         self.logger.info("downloading zipped binaries...")
-        try:
-            # change download url from github releases to qcri
-            # binaries_url = "https://github.com/MagedSaeed/farasapy/releases/download/toolkit-bins-released/farasa_bin.zip"
-            binaries_url = "https://farasa-api.qcri.org/farasapy/releases/download/toolkit-bins-released/farasa_bin.zip"
-            binaries_request = requests.get(binaries_url, stream=True, verify=False)
-            # show the progress bar while getting content
-            content_bytes = self._get_content_with_progressbar(binaries_request)
-            self.logger.debug("extracting...")
-            binzip = zipfile.ZipFile(io.BytesIO(content_bytes))
-            binzip.extractall(path=self.__base_dir)
-            self.logger.debug("toolkit binaries are downloaded and extracted.")
-        except Exception as e:
-            self.logger.error("an error occured")
-            self.logger.error(e)
+        # change download url from github releases to qcri
+        # binaries_url = "https://github.com/MagedSaeed/farasapy/releases/download/toolkit-bins-released/farasa_bin.zip"
+        binaries_urls = [
+            "https://github.com/ZOUHEIRBN/farasapy/releases/download/under-dev/farasa_bin.zip",
+            "https://github.com/ZOUHEIRBN/farasapy/releases/download/under-dev/FarasaDependencyJar.jar.tar.gz",
+        ]
+        for url in binaries_urls:
+            try:
+                binaries_request = requests.get(url, stream=True, verify=False)
+                # show the progress bar while getting content
+                content_bytes = self._get_content_with_progressbar(binaries_request)
+                self.logger.debug(f"extracting to {self.__base_dir}...")
+                if url.endswith('.zip'):
+                    binzip = zipfile.ZipFile(io.BytesIO(content_bytes))
+                    binzip.extractall(path=self.__base_dir)
+                elif url.endswith('.gz'):
+                    binzip = gzip.GzipFile(io.BytesIO(content_bytes))
+                    binzip.extractall(path=self.__base_dir)
+
+                self.logger.debug("toolkit binaries are downloaded and extracted.")
+            except Exception as e:
+                self.logger.error("an error occured")
+                self.logger.error(e)
 
     def __initialize_task_proc(self):
         self.__task_proc = subprocess.Popen(
@@ -174,8 +188,9 @@ class FarasaBase:
             itmp.write(btext)
             # https://stackoverflow.com/questions/46004774/python-namedtemporaryfile-appears-empty-even-after-data-is-written
             itmp.flush()
+            cmd = self.__APIs[self.task] + ["-i", itmp.name, "-o", otmp.name]
             proc = subprocess.run(
-                self.__APIs[self.task] + ["-i", itmp.name, "-o", otmp.name],
+                cmd,
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL,
                 # this only compatiple with python>3.6
