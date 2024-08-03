@@ -1,15 +1,19 @@
+from pprint import pprint
 from farasa.pos import FarasaPOSTagger
 from farasa.ner import FarasaNamedEntityRecognizer
 from farasa.diacratizer import FarasaDiacritizer
 from farasa.segmenter import FarasaSegmenter
 from farasa.stemmer import FarasaStemmer
+from farasa.dependency import FarasaDepParser
 
 
 # https://r12a.github.io/scripts/tutorial/summaries/arabic
 sample = """
 يُشار إلى أن اللغة العربية يتحدثها أكثر من 422 مليون نسمة ويتوزع متحدثوها في المنطقة المعروفة باسم الوطن العربي بالإضافة إلى العديد من المناطق الأخرى المجاورة مثل الأهواز وتركيا وتشاد والسنغال وإريتريا وغيرها.     وهي اللغة الرابعة من لغات منظمة الأمم المتحدة الرسمية الست منذ 99/9/1999. /
 """
-
+sample = """
+لا ينتهي الصراع بين الخير والشر
+"""
 
 """
 ---------------------
@@ -48,6 +52,12 @@ print("----------------------------------------------")
 diacritizer = FarasaDiacritizer()
 diacritized = diacritizer.diacritize(sample)
 print("sample diacritized:", diacritized)
+print("----------------------------------------------")
+
+depparser = FarasaDepParser()
+depparsed = depparser.parse_segments(sample)
+print("sample dependencies:")
+pprint(depparsed)
 print("----------------------------------------------")
 
 """
@@ -91,4 +101,10 @@ print("----------------------------------------------")
 diacritizer_interactive = FarasaDiacritizer(interactive=True)
 diacritized_interactive = diacritizer_interactive.diacritize(sample)
 print("sample diacritized (interactive):", diacritized_interactive)
+print("----------------------------------------------")
+
+
+depparser_interactive = FarasaDepParser(interactive=True)
+depparsed_interactive = depparser_interactive.parse(sample)
+print("sample dependencies (interactive):", depparsed_interactive)
 print("----------------------------------------------")

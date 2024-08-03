@@ -2,7 +2,7 @@
 __pycache__/
 *.py[cod]
 farasa/__pycache__/
-venv/
+.venv/
 
 # Installer logs
 pip-log.txt
@@ -15,5 +15,6 @@ farasa_bin_obselete/
 lib/
 build/
 dist/
+tmp/
 farasa/farasa_bin/
 farasa/__obselete.py
