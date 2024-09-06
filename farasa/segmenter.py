@@ -4,6 +4,10 @@ from .__base import FarasaBase
 class FarasaSegmenter(FarasaBase):
     task = "segment"
 
+    @property
+    def command(self):
+        return self.BASE_CMD + [str(self.bin_lib_dir / "FarasaSegmenterJar.jar")]
+
     def segment(self, text):
         return self._do_task(text=text)
 

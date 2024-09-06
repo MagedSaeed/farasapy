@@ -58,6 +58,11 @@ class TaggedToken:
 
 
 class FarasaPOSTagger(FarasaBase):
+
+    @property
+    def command(self):
+        return self.BASE_CMD + [str(self.bin_dir / "FarasaPOSJar.jar")]
+
     task = "POS"
 
     def tag(self, text):
