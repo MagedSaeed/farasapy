@@ -17,37 +17,36 @@ class FarasaBase:
     task = None
     base_dir = Path(__file__).parent.absolute()
     bin_dir = Path(f"{base_dir}/farasa_bin")
-    bin_lib_dir = Path(f"{bin_dir}/lib")
+    # bin_lib_dir = Path(f"{bin_dir}/lib")
+    bin_path = None
 
     # shlex not compatible with Windows replace it with list()
     # set java encoding with option `-Dfile.encoding=UTF-8`
     BASE_CMD = ["java", "-Dfile.encoding=UTF-8", "-jar"]
-    # __APIs = {
-    # "segment": __BASE_CMD + [str(__bin_lib_dir / "FarasaSegmenterJar.jar")],
-    # "stem": __BASE_CMD
-    # + [str(__bin_lib_dir / "FarasaSegmenterJar.jar"), "-l", "true"],
-    # "NER": __BASE_CMD + [str(__bin_dir / "FarasaNERJar.jar")],
-    # "POS": __BASE_CMD + [str(__bin_dir / "FarasaPOSJar.jar")],
-    # "diacritize": __BASE_CMD + [str(__bin_dir / "FarasaDiacritizeJar.jar")],
-    # }
     interactive = False
     task_proc = None
     logger = None
+    is_downloadable = True
 
-    @property
-    def command(self):
-        """
-        This function should return the CMD command to be executed for the task.
-        """
-        raise NotImplemented
-
-    def __init__(self, interactive=False, logging_level="WARNING"):
-        self._config_logs(logging_level)
+    def __init__(self, interactive=False, logging_level="WARNING", binary_path=None):
+        self.config_logs(logging_level)
         self.logger.debug("perform system check...")
         self.logger.debug("check java version...")
         self.check_java_version()
         self.logger.debug("check toolkit binaries...")
-        self._check_toolkit_binaries()
+        if binary_path is not None:
+            self.bin_path = Path(binary_path)
+            # assert the path exists as a file
+            assert Path(self.bin_path).is_file(), f"{self.bin_path} not found"
+        else:
+            # binaries that should be downloaded from qcri
+            if self.is_downloadable:
+                self.check_toolkit_binaries()
+            else:
+                raise Exception(
+                    """Binaries of this task are not downloadable automatically!
+                    Please download them from qcri website manually, extract them, then set 'binary_path' to the extracted JAR file path of this task."""
+                )
         Path(f"{self.base_dir}/tmp").mkdir(exist_ok=True)
         self.logger.info("Dependencies seem to be satisfied..")
         if interactive:
@@ -67,7 +66,14 @@ class FarasaBase:
                 f"task [{self.task.upper()}] is initialized in \033[34mSTANDALONE \033[37mmode..."
             )
 
-    def _config_logs(self, logging_level):
+    @property
+    def command(self):
+        """
+        This function should return the CMD command to be executed for the task.
+        """
+        raise NotImplemented
+
+    def config_logs(self, logging_level):
         self.logger = logging.getLogger("farasapy_logger")
         self.logger.propagate = False
         self.logger.setLevel(getattr(logging, logging_level.upper()))
@@ -78,72 +84,6 @@ class FarasaBase:
             stream_logger = logging.StreamHandler()
             stream_logger.setFormatter(logs_formatter)
             self.logger.addHandler(stream_logger)
-
-    def _check_toolkit_binaries(self):
-        download = False
-        # check in bin folder:
-        for jar in ("FarasaNERJar", "FarasaPOSJar", "FarasaDiacritizeJar"):
-            if not Path(f"{self.bin_dir}/{jar}.jar").is_file():
-                download = True
-                break
-
-        if (
-            download or not Path(f"{self.bin_lib_dir}/FarasaSegmenterJar.jar").is_file()
-        ):  # last check for binaries in farasa_bin/lib
-            self.logger.info("some binaries are not existed.")
-            self._download_binaries()
-
-    def _get_content_with_progressbar(self, request):
-        totalsize = int(request.headers.get("content-length", 0))
-        blocksize = 3413334
-        bar = tqdm(
-            total=totalsize,
-            unit="iB",
-            unit_scale=True,
-            ncols=5,
-            dynamic_ncols=True,
-            file=sys.stdout,
-        )
-        content = None
-        for data in request.iter_content(blocksize):
-            bar.update(len(data))
-            if content is None:
-                content = data
-            else:
-                content += data
-        return content
-
-    def _download_binaries(self):
-        self.logger.info("downloading zipped binaries...")
-        try:
-            # change download url from github releases to qcri
-            # binaries_url = "https://github.com/MagedSaeed/farasapy/releases/download/toolkit-bins-released/farasa_bin.zip"
-            binaries_url = "https://farasa-api.qcri.org/farasapy/releases/download/toolkit-bins-released/farasa_bin.zip"
-            binaries_request = requests.get(binaries_url, stream=True, verify=False)
-            # show the progress bar while getting content
-            content_bytes = self._get_content_with_progressbar(binaries_request)
-            self.logger.debug("extracting...")
-            binzip = zipfile.ZipFile(io.BytesIO(content_bytes))
-            binzip.extractall(path=self.base_dir)
-            self.logger.debug("toolkit binaries are downloaded and extracted.")
-        except Exception as e:
-            self.logger.error("an error occured")
-            self.logger.error(e)
-
-    def initialize_task_proc(self):
-        self.task_proc = subprocess.Popen(
-            self.command,
-            stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-
-    def initialize_task(self):
-        word = "اختبار"
-        word += "\n"
-        bword = str.encode(word)
-        self.initialize_task_proc()
-        return self.run_task_interactive(bword)
 
     def check_java_version(self):
         try:
@@ -169,7 +109,73 @@ class FarasaBase:
                 "We could not check for java version on the machine. Please make sure you have installed Java 1.7+ and add it to your PATH."
             )
 
-    def run_task(self, btext):
+    def check_toolkit_binaries(self):
+        download = False
+        # check in bin folder:
+        for jar in ("FarasaNERJar", "FarasaPOSJar", "FarasaDiacritizeJar"):
+            if not Path(f"{self.bin_dir}/{jar}.jar").is_file():
+                download = True
+                break
+
+        if (
+            download or not Path(f"{self.bin_dir}/lib/FarasaSegmenterJar.jar").is_file()
+        ):  # last check for binaries in farasa_bin/lib
+            self.logger.info("some binaries does not exist. Downloading...")
+            self.download_binaries()
+
+    def get_content_with_progressbar(self, request):
+        totalsize = int(request.headers.get("content-length", 0))
+        blocksize = 3413334
+        bar = tqdm(
+            total=totalsize,
+            unit="iB",
+            unit_scale=True,
+            ncols=5,
+            dynamic_ncols=True,
+            file=sys.stdout,
+        )
+        content = None
+        for data in request.iter_content(blocksize):
+            bar.update(len(data))
+            if content is None:
+                content = data
+            else:
+                content += data
+        return content
+
+    def download_binaries(self):
+        self.logger.info("downloading zipped binaries...")
+        try:
+            # change download url from github releases to qcri
+            # binaries_url = "https://github.com/MagedSaeed/farasapy/releases/download/toolkit-bins-released/farasa_bin.zip"
+            binaries_url = "https://farasa-api.qcri.org/farasapy/releases/download/toolkit-bins-released/farasa_bin.zip"
+            binaries_request = requests.get(binaries_url, stream=True, verify=False)
+            # show the progress bar while getting content
+            content_bytes = self.get_content_with_progressbar(binaries_request)
+            self.logger.debug("extracting...")
+            binzip = zipfile.ZipFile(io.BytesIO(content_bytes))
+            binzip.extractall(path=self.base_dir)
+            self.logger.debug("toolkit binaries are downloaded and extracted.")
+        except Exception as e:
+            self.logger.error("an error occurred")
+            self.logger.error(e)
+
+    def initialize_task_proc(self):
+        self.task_proc = subprocess.Popen(
+            self.command,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+
+    def initialize_task(self):
+        word = "اختبار"
+        word += "\n"
+        bword = str.encode(word)
+        self.initialize_task_proc()
+        return self.run_task_interactive(bword)
+
+    def run_task_standalone(self, btext):
         assert btext is not None
         tmpdir = str(self.base_dir / "tmp")
         # if delete=True on Windows cannot get any content
@@ -234,9 +240,9 @@ class FarasaBase:
 
     def do_task_standalone(self, strip_text):
         byted_strip_text = str.encode(strip_text)
-        return self.run_task(btext=byted_strip_text)
+        return self.run_task_standalone(btext=byted_strip_text)
 
-    def _do_task(self, text):
+    def do_task(self, text):
         strip_text = text.strip()
         if self.interactive:
             return self.do_task_interactive(strip_text)

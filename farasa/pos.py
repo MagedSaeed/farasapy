@@ -61,12 +61,14 @@ class FarasaPOSTagger(FarasaBase):
 
     @property
     def command(self):
+        if self.bin_path is not None:
+            return self.BASE_CMD + [str(self.bin_path)]
         return self.BASE_CMD + [str(self.bin_dir / "FarasaPOSJar.jar")]
 
     task = "POS"
 
     def tag(self, text):
-        return self._do_task(text=text)
+        return self.do_task(text=text)
 
     def tag_segments(self, text, combine_subtokens=False):
         tokens_objects = list()
