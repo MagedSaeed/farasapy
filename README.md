@@ -54,8 +54,8 @@ pip install farasapy
 
 
 - The library, as it is a wrapper for Java jars, requires that **Java is installed in your system** and is **in your PATH**. It is, also, not recommended to have a version below Java 1.7.
-
 - Some binaries are computationally HEAVY!
+- Some tasks may be slow.
 
 ## An Overview
 
