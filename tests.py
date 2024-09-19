@@ -3,13 +3,16 @@ from farasa.ner import FarasaNamedEntityRecognizer
 from farasa.diacratizer import FarasaDiacritizer
 from farasa.segmenter import FarasaSegmenter
 from farasa.stemmer import FarasaStemmer
-
+from farasa.spellchecker import FarasaSpellChecker
 
 # https://r12a.github.io/scripts/tutorial/summaries/arabic
 sample = """
 يُشار إلى أن اللغة العربية يتحدثها أكثر من 422 مليون نسمة ويتوزع متحدثوها في المنطقة المعروفة باسم الوطن العربي بالإضافة إلى العديد من المناطق الأخرى المجاورة مثل الأهواز وتركيا وتشاد والسنغال وإريتريا وغيرها. وهي اللغة الرابعة من لغات منظمة الأمم المتحدة الرسمية الست.
 """
 
+spellchecker_sample = """
+هذا النص خاطؤ الكتابه
+"""
 
 """
 ---------------------
@@ -50,6 +53,11 @@ diacritized = diacritizer.diacritize(sample)
 print("sample diacritized:", diacritized)
 print("----------------------------------------------")
 
+spellchecker = FarasaSpellChecker()
+corrected = spellchecker.spell_check(spellchecker_sample)
+print("spell checking sample:", spellchecker_sample)
+print("sample spell checked:", corrected)
+print("----------------------------------------------")
 """
 ---------------------
 interactive mode
@@ -92,3 +100,8 @@ diacritizer_interactive = FarasaDiacritizer(interactive=True)
 diacritized_interactive = diacritizer_interactive.diacritize(sample)
 print("sample diacritized (interactive):", diacritized_interactive)
 print("----------------------------------------------")
+
+try:
+    spellchecker = FarasaSpellChecker(interactive=True)
+except AssertionError as e:
+    print(e)
