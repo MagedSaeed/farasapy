@@ -139,7 +139,7 @@ print(segmented)
 # Want to cite?
 
 Farasa is described in this paper for the segmentation task:
-```
+```bibtex
 @inproceedings{abdelali2016farasa,
   title={Farasa: A fast and furious segmenter for arabic},
   author={Abdelali, Ahmed and Darwish, Kareem and Durrani, Nadir and Mubarak, Hamdy},
@@ -153,14 +153,14 @@ You can also find the list of publications to site from here: http://qatsdemo.cl
 
 If you want to cite this tool specifically as a python bridge to Farasa Java toolkit, you can use the following bibtex:
 
-```
+```bibtex
 @misc{MagedSaeed:online,
-author = {},
-title = {MagedSaeed/farasapy: A Python implementation of Farasa toolkit},
-howpublished = {\url{https://github.com/MagedSaeed/farasapy}},
-month = {June},
-year = {2021},
-note = {(Accessed on 09/20/2024)} # put your last access here
+  author = {Maged Saeed Al-shaibani},
+  title = {MagedSaeed/farasapy: A Python implementation of Farasa toolkit},
+  howpublished = {\url{https://github.com/MagedSaeed/farasapy}},
+  month = {June},
+  year = {2021},
+  note = {(Accessed on 09/20/2024)} # put your last access here
 }
 ```
 
