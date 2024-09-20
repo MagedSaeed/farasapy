@@ -138,9 +138,20 @@ print(segmented)
 
 # Want to cite?
 
-You can find the list of publications to site from here: http://qatsdemo.cloudapp.net/farasa/.
+Farasa is described in this paper for the segmentation task:
+```
+@inproceedings{abdelali2016farasa,
+  title={Farasa: A fast and furious segmenter for arabic},
+  author={Abdelali, Ahmed and Darwish, Kareem and Durrani, Nadir and Mubarak, Hamdy},
+  booktitle={Proceedings of the 2016 conference of the North American chapter of the association for computational linguistics: Demonstrations},
+  pages={11--16},
+  year={2016}
+}
+```
 
-If you want to cite this tool specifically, you can use the following bibtex:
+You can also find the list of publications to site from here: http://qatsdemo.cloudapp.net/farasa/ for the other tasks.
+
+If you want to cite this tool specifically as a python bridge to Farasa Java toolkit, you can use the following bibtex:
 
 ```
 @misc{MagedSaeed:online,
