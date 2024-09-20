@@ -42,7 +42,7 @@ As Python is a general purpose language and so popular for many NLP tasks, an au
 
 # Installation
 
-```
+```bash
 pip install farasapy
 ```
 
@@ -61,7 +61,7 @@ pip install farasapy
 
 Farasapy wraps and maintains all the toolkit's APIs in different classes where each class is in separate file. You need to import your class of interest from its file as follows:
 
-```
+```python
 from farasa.pos import FarasaPOSTagger 
 from farasa.ner import FarasaNamedEntityRecognizer 
 from farasa.diacratizer import FarasaDiacritizer 
@@ -71,7 +71,7 @@ from farasa.stemmer import FarasaStemmer
 
 Now, If you are using the library for the first time, the library needs to download farasa toolkit binaries first. You do not need to worry about anything. The library, whenever you instantiate an object of any of its classes, will first check for the binaries, download them if they are not existed. This is an example of instantiating an object from `FarasaStemmer` for the first use of the library.
 
-```
+```python
 stemmer = FarasaStemmer()
 perform system check...
 check java version...
@@ -86,14 +86,14 @@ Dependencies seem to be satisfied..
 task [STEM] is initialized in STANDALONE mode...
 ```
 let us *stem* the following example:
-```
+```python
 sample =\ 
 ''' 
 يُشار إلى أن اللغة العربية يتحدثها أكثر من 422 مليون نسمة ويتوزع متحدثوها
  في المنطقة المعروفة باسم الوطن العربي بالإضافة إلى العديد من المناطق ال
 أخرى المجاورة مثل الأهواز وتركيا وتشاد والسنغال وإريتريا وغيرها.وهي اللغ
 ة الرابعة من لغات منظمة الأمم المتحدة الرسمية الست. 
-'''
+'''python
 stemmed_text = stemmer.stem(sample)                                     
 print(stemmed_text)
 'أشار إلى أن لغة عربي تحدث أكثر من 422 مليون نسمة توزع متحدثوها في منطقة معروف اسم وطن عربي إضافة إلى عديد من منطقة آخر مجاور مثل أهواز تركيا تشاد سنغال أريتريا غير . هي لغة رابع من لغة منظمة أمة متحد رسمي ست .'
@@ -114,7 +114,7 @@ To work on **interactive mode**, you just need to pass `interactive=True` option
 
 The following is an example on the segmentation API that is running *interactively*.
 
-```
+```python
 segmenter = FarasaSegmenter(interactive=True)
 perform system check...
 check java version...
