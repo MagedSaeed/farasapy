@@ -140,6 +140,19 @@ print(segmented)
 
 You can find the list of publications to site from here: http://qatsdemo.cloudapp.net/farasa/.
 
+If you want to cite this tool specifically, you can use the following bibtex:
+
+```
+@misc{MagedSaeed:online,
+author = {},
+title = {MagedSaeed/farasapy: A Python implementation of Farasa toolkit},
+howpublished = {\url{https://github.com/MagedSaeed/farasapy}},
+month = {June},
+year = {2021},
+note = {(Accessed on 09/20/2024)} # put your last access here
+}
+```
+
 # Useful URLs
 
 - The official site: http://alt.qcri.org/farasa/
