@@ -73,6 +73,8 @@ Now, If you are using the library for the first time, the library needs to downl
 
 ```python
 stemmer = FarasaStemmer()
+# ouptuts:
+'''
 perform system check...
 check java version...
 Your java version is 1.8 which is compatiple with Farasa
@@ -84,6 +86,7 @@ extracting...
 toolkit binaries are downloaded and extracted.
 Dependencies seem to be satisfied..
 task [STEM] is initialized in STANDALONE mode...
+'''
 ```
 let us *stem* the following example:
 ```python
@@ -93,7 +96,7 @@ sample =\
  في المنطقة المعروفة باسم الوطن العربي بالإضافة إلى العديد من المناطق ال
 أخرى المجاورة مثل الأهواز وتركيا وتشاد والسنغال وإريتريا وغيرها.وهي اللغ
 ة الرابعة من لغات منظمة الأمم المتحدة الرسمية الست. 
-'''python
+'''
 stemmed_text = stemmer.stem(sample)                                     
 print(stemmed_text)
 'أشار إلى أن لغة عربي تحدث أكثر من 422 مليون نسمة توزع متحدثوها في منطقة معروف اسم وطن عربي إضافة إلى عديد من منطقة آخر مجاور مثل أهواز تركيا تشاد سنغال أريتريا غير . هي لغة رابع من لغة منظمة أمة متحد رسمي ست .'
@@ -116,6 +119,8 @@ The following is an example on the segmentation API that is running *interactive
 
 ```python
 segmenter = FarasaSegmenter(interactive=True)
+# outputs:
+'''
 perform system check...
 check java version...
 Your java version is 1.8 which is compatiple with Farasa 
@@ -125,7 +130,7 @@ Dependencies seem to be satisfied..
 warnings.warn("Be careful with large lines as they may break on interactive mode. You may switch to Standalone mode for such cases.")
 initializing [SEGMENT] task in INTERACTIVE mode...
 task [SEGMENT] is initialized interactively.
-
+'''
 
 segmented = segmenter.segment(sample)
 print(segmented)
