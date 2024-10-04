@@ -139,7 +139,10 @@ print(segmented)
 
 # Contribution
 
+It is my pleasure to give special thanks to those who spend time and effort contributing to farasapy.
+
 - The credit of desegmentation code goes for @Wissam Antoun [https://github.com/WissamAntoun/Farasa_Desegmenter] in his repository [https://github.com/WissamAntoun/Farasa_Desegmenter].
+- The credit of adding spellchecker support after downloading the binaries JARs from QCRI website goes to @abdullah-shwaiky.
 
 # Want to cite?
 
