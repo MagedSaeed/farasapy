@@ -17,3 +17,4 @@ build/
 dist/
 farasa/farasa_bin/
 farasa/__obselete.py
+downloaded_jars/*

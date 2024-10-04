@@ -53,7 +53,7 @@ diacritized = diacritizer.diacritize(sample)
 print("sample diacritized:", diacritized)
 print("----------------------------------------------")
 
-spellchecker = FarasaSpellChecker()
+spellchecker = FarasaSpellChecker(binary_path="downloaded_jars/SpellChecker.jar")
 corrected = spellchecker.spell_check(spellchecker_sample)
 print("spell checking sample:", spellchecker_sample)
 print("sample spell checked:", corrected)
