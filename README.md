@@ -42,7 +42,7 @@ As Python is a general purpose language and so popular for many NLP tasks, an au
 
 # Installation
 
-```
+```bash
 pip install farasapy
 ```
 
@@ -61,7 +61,7 @@ pip install farasapy
 
 Farasapy wraps and maintains all the toolkit's APIs in different classes where each class is in separate file. You need to import your class of interest from its file as follows:
 
-```
+```python
 from farasa.pos import FarasaPOSTagger 
 from farasa.ner import FarasaNamedEntityRecognizer 
 from farasa.diacratizer import FarasaDiacritizer 
@@ -71,8 +71,10 @@ from farasa.stemmer import FarasaStemmer
 
 Now, If you are using the library for the first time, the library needs to download farasa toolkit binaries first. You do not need to worry about anything. The library, whenever you instantiate an object of any of its classes, will first check for the binaries, download them if they are not existed. This is an example of instantiating an object from `FarasaStemmer` for the first use of the library.
 
-```
+```python
 stemmer = FarasaStemmer()
+# ouptuts:
+'''
 perform system check...
 check java version...
 Your java version is 1.8 which is compatiple with Farasa
@@ -84,9 +86,10 @@ extracting...
 toolkit binaries are downloaded and extracted.
 Dependencies seem to be satisfied..
 task [STEM] is initialized in STANDALONE mode...
+'''
 ```
 let us *stem* the following example:
-```
+```python
 sample =\ 
 ''' 
 يُشار إلى أن اللغة العربية يتحدثها أكثر من 422 مليون نسمة ويتوزع متحدثوها
@@ -114,8 +117,10 @@ To work on **interactive mode**, you just need to pass `interactive=True` option
 
 The following is an example on the segmentation API that is running *interactively*.
 
-```
+```python
 segmenter = FarasaSegmenter(interactive=True)
+# outputs:
+'''
 perform system check...
 check java version...
 Your java version is 1.8 which is compatiple with Farasa 
@@ -125,7 +130,7 @@ Dependencies seem to be satisfied..
 warnings.warn("Be careful with large lines as they may break on interactive mode. You may switch to Standalone mode for such cases.")
 initializing [SEGMENT] task in INTERACTIVE mode...
 task [SEGMENT] is initialized interactively.
-
+'''
 
 segmented = segmenter.segment(sample)
 print(segmented)
@@ -138,7 +143,31 @@ print(segmented)
 
 # Want to cite?
 
-You can find the list of publications to site from here: http://qatsdemo.cloudapp.net/farasa/.
+Farasa is described in this paper for the segmentation task:
+```bibtex
+@inproceedings{abdelali2016farasa,
+  title={Farasa: A fast and furious segmenter for arabic},
+  author={Abdelali, Ahmed and Darwish, Kareem and Durrani, Nadir and Mubarak, Hamdy},
+  booktitle={Proceedings of the 2016 conference of the North American chapter of the association for computational linguistics: Demonstrations},
+  pages={11--16},
+  year={2016}
+}
+```
+
+You can also find the list of publications to site from here: http://qatsdemo.cloudapp.net/farasa/ for the other tasks.
+
+If you want to cite this tool specifically as a python bridge to Farasa Java toolkit, you can use the following bibtex:
+
+```bibtex
+@misc{MagedSaeed:online,
+  author = {Maged Saeed Al-shaibani},
+  title = {MagedSaeed/farasapy: A Python implementation of Farasa toolkit},
+  howpublished = {\url{https://github.com/MagedSaeed/farasapy}},
+  month = {June},
+  year = {2021},
+  note = {(Accessed on 09/20/2024)} # put your last access here
+}
+```
 
 # Useful URLs
 
