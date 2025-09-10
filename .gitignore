@@ -15,6 +15,7 @@ farasa_bin_obselete/
 lib/
 build/
 dist/
+*.egg-info/
 farasa/farasa_bin/
 farasa/__obselete.py
 downloaded_jars/*
