@@ -4,6 +4,7 @@ from farasa.diacratizer import FarasaDiacritizer
 from farasa.segmenter import FarasaSegmenter
 from farasa.stemmer import FarasaStemmer
 from farasa.spellchecker import FarasaSpellChecker
+from farasa.lemmatizer import FarasaLemmatizer
 
 # https://r12a.github.io/scripts/tutorial/summaries/arabic
 sample = """
@@ -58,6 +59,15 @@ corrected = spellchecker.spell_check(spellchecker_sample)
 print("spell checking sample:", spellchecker_sample)
 print("sample spell checked:", corrected)
 print("----------------------------------------------")
+
+# print("----------------------------------------------")
+# print("Lemmatizer (requires user-provided JAR file)")
+# print("Please provide the path to the lemmatizer JAR file to run this test.")
+# lemmatizer = FarasaLemmatizer(binary_path="<path_to_your_lemmatizer_jar_file>")
+# lemmatized = lemmatizer.lemmatize(sample)
+# print("sample lemmatized:", lemmatized)
+# print("----------------------------------------------")
+
 """
 ---------------------
 interactive mode
