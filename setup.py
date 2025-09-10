@@ -7,7 +7,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="farasapy",
-    version="0.0.14",
+    version="0.1.0",
     author="MagedSaeed",
     author_email="mageedsaeed1@gmail.com",
     description="A Python Wrapper for the well Farasa toolkit",

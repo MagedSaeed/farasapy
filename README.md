@@ -9,6 +9,7 @@
   - [An Overview](#an-overview)
     - [Standalone Mode](#standalone-mode)
     - [Interactive Mode](#interactive-mode)
+  - [Caching Support](#caching-support)
 - [Contribution](#contribution)
 - [Want to cite?](#want-to-cite)
 - [Useful URLs](#useful-urls)
@@ -35,6 +36,7 @@
  3. Named Entity Recognition (NER).
  4. Part Of Speech tagging (POS tagging).
  5. Diacritization.
+ 6. Lemmatization.
 
 The toolkit is built and compiled in Java. Developers who want to use it without using this library may call the binaries directly from their code.
 
@@ -67,6 +69,7 @@ from farasa.ner import FarasaNamedEntityRecognizer
 from farasa.diacratizer import FarasaDiacritizer 
 from farasa.segmenter import FarasaSegmenter 
 from farasa.stemmer import FarasaStemmer
+from farasa.lemmatizer import FarasaLemmatizer
 ```
 
 Now, If you are using the library for the first time, the library needs to download farasa toolkit binaries first. You do not need to worry about anything. The library, whenever you instantiate an object of any of its classes, will first check for the binaries, download them if they are not existed. This is an example of instantiating an object from `FarasaStemmer` for the first use of the library.
@@ -136,6 +139,50 @@ segmented = segmenter.segment(sample)
 print(segmented)
 'يشار إلى أن ال+لغ+ة ال+عربي+ة يتحدث+ها أكثر من 422 مليون نسم+ة و+يتوزع متحدثوها في ال+منطق+ة ال+معروف+ة باسم ال+وطن ال+عربي ب+ال+إضاف+ة إلى ال+عديد من ال+مناطق ال+أخرى ال+مجاور+ة مثل ال+أهواز و+تركيا و+تشاد و+ال+سنغال و+إريتريا و+غير+ها . و+هي ال+لغ+ة ال+رابع+ة من لغ+ات منظم+ة ال+أمم ال+متحد+ة ال+رسمي+ة ال+ست .'
 ```
+
+## Caching Support
+
+Farasapy now includes a caching mechanisim to improve performance for repeated operations. By default, caching is **enabled** and results are stored in a default cache folder in ~/.cache (can be configured based on user convenience) to speed up subsequent identical requests.
+
+### Basic Usage
+
+```python
+# Caching is enabled by default
+stemmer = FarasaStemmer()
+result1 = stemmer.stem("مرحبا")  # First call: processes and caches
+result2 = stemmer.stem("مرحبا")  # Second call: loads from cache (faster)
+```
+
+### Cache Configuration
+
+You can control caching behavior when creating objects:
+
+```python
+# Enable caching (default)
+stemmer = FarasaStemmer(cache=True)
+
+# Disable caching
+stemmer = FarasaStemmer(cache=False)
+
+# Custom cache directory
+stemmer = FarasaStemmer(cache=True, cache_dir="/path/to/my/cache") # default is ~/.cache, you will find a farasapy folder there. Each task has its own folder. Cached items are key(text)-value(transformed text) json files.
+```
+
+Clear cached results when needed:
+
+```python
+stemmer = FarasaStemmer()
+# Process some text...
+stemmer.clear_cache()  # Clear all cached results for this task
+```
+
+Cache Location:
+
+- **Linux/macOS**: `~/.cache/farasapy/` (follows XDG Cache Directory specification)
+- **Windows**: `%LOCALAPPDATA%/farasapy/`
+- **Custom**: Specify your own directory with the `cache_dir` parameter
+
+Cache files are stored in JSON format and organized by task type (stem, segment, etc.).
 
 # Contribution
 

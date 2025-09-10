@@ -1,4 +1,6 @@
+import hashlib
 import io
+import json
 import logging
 import os
 import re
@@ -28,8 +30,22 @@ class FarasaBase:
     logger = None
     is_downloadable = True
 
-    def __init__(self, interactive=False, logging_level="WARNING", binary_path=None):
+    def __init__(self, interactive=False, logging_level="WARNING", binary_path=None, cache=True, cache_dir=None):
         self.config_logs(logging_level)
+        self.cache_enabled = cache
+        
+        # Set cache directory: user-provided, or OS-appropriate default
+        if cache_dir is not None:
+            self.cache_dir = Path(cache_dir)
+        else:
+            # Use XDG cache directory on Linux/Unix, LOCALAPPDATA on Windows
+            if os.name == 'nt':  # Windows
+                cache_base = Path(os.getenv('LOCALAPPDATA', tempfile.gettempdir()))
+            else:  # Unix-like (Linux, macOS, etc.)
+                cache_base = Path(os.getenv('XDG_CACHE_HOME', Path.home() / '.cache'))
+            self.cache_dir = cache_base / "farasapy"
+        if self.cache_enabled:
+            self._setup_cache()
         self.logger.debug("perform system check...")
         self.logger.debug("check java version...")
         self.check_java_version()
@@ -244,10 +260,99 @@ class FarasaBase:
 
     def do_task(self, text):
         strip_text = text.strip()
+        
+        # Store current text for cache saving
+        self._current_text = strip_text
+        
+        # Try to load from cache first
+        cache_key = self._get_cache_key(strip_text)
+        cached_result = self._load_from_cache(cache_key)
+        if cached_result is not None:
+            return cached_result
+        
+        # Execute the task if not in cache
         if self.interactive:
-            return self.do_task_interactive(strip_text)
+            result = self.do_task_interactive(strip_text)
         else:
-            return self.do_task_standalone(strip_text)
+            result = self.do_task_standalone(strip_text)
+        
+        # Save result to cache
+        self._save_to_cache(cache_key, result)
+        return result
 
     def terminate(self):
         self.task_proc.terminate()
+
+    def clear_cache(self):
+        """Clear all cached results for this task"""
+        if not self.cache_enabled:
+            self.logger.info("Cache is disabled, nothing to clear.")
+            return
+        
+        task_cache_dir = self.cache_dir / self.task
+        if task_cache_dir.exists():
+            try:
+                import shutil
+                shutil.rmtree(task_cache_dir)
+                task_cache_dir.mkdir(exist_ok=True)
+                self.logger.info(f"Cache cleared for task: {self.task}")
+            except Exception as e:
+                self.logger.warning(f"Failed to clear cache: {e}")
+        else:
+            self.logger.info(f"No cache directory found for task: {self.task}")
+
+    def _setup_cache(self):
+        """Create cache directory structure"""
+        try:
+            self.cache_dir.mkdir(exist_ok=True)
+            task_cache_dir = self.cache_dir / self.task
+            task_cache_dir.mkdir(exist_ok=True)
+            self.logger.debug(f"Cache directory set up at {self.cache_dir}")
+        except Exception as e:
+            self.logger.warning(f"Failed to setup cache directory: {e}. Disabling cache.")
+            self.cache_enabled = False
+
+    def _get_cache_key(self, text):
+        """Generate a unique cache key for the given text and current configuration"""
+        # Include task type, interactive mode, and text content in the hash
+        cache_data = f"{self.task}:{'interactive' if self.interactive else 'standalone'}:{text}"
+        return hashlib.sha256(cache_data.encode('utf-8')).hexdigest()
+
+    def _get_cache_path(self, cache_key):
+        """Get the full path to the cache file"""
+        return self.cache_dir / self.task / f"{cache_key}.json"
+
+    def _load_from_cache(self, cache_key):
+        """Load result from cache if it exists"""
+        if not self.cache_enabled:
+            return None
+        
+        cache_path = self._get_cache_path(cache_key)
+        if cache_path.exists():
+            try:
+                with open(cache_path, 'r', encoding='utf-8') as f:
+                    cache_data = json.load(f)
+                    # Get the first (and only) value from the key-value pair
+                    result = next(iter(cache_data.values()))
+                    self.logger.debug(f"Cache hit for key: {cache_key[:8]}...")
+                    return result
+            except Exception as e:
+                self.logger.warning(f"Failed to load from cache: {e}")
+        return None
+
+    def _save_to_cache(self, cache_key, result):
+        """Save result to cache"""
+        if not self.cache_enabled:
+            return
+        
+        cache_path = self._get_cache_path(cache_key)
+        try:
+            # Get the original text from the current task
+            original_text = getattr(self, '_current_text', '')
+            cache_data = {original_text: result}
+            
+            with open(cache_path, 'w', encoding='utf-8') as f:
+                json.dump(cache_data, f, ensure_ascii=False, indent=2)
+                self.logger.debug(f"Cached result for key: {cache_key[:8]}...")
+        except Exception as e:
+            self.logger.warning(f"Failed to save to cache: {e}")
